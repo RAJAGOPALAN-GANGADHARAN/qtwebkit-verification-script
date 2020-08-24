@@ -1,0 +1,4 @@
+Os:{{os}}
+Qt:{{qt}}
+major:{{major}}
+minor:{{minor}}

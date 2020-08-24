@@ -1,0 +1,7 @@
+lib/libQt5WebKit.so
+lib/libQt5WebKit.so.5
+lib/libQt5WebKit.so.5.212.0
+lib/libQt5WebKitWidgets.so
+lib/libQt5WebKitWidgets.so.5
+lib/libQt5WebKitWidgets.so.5.212.0
+libexec/QtWebPluginProcess
