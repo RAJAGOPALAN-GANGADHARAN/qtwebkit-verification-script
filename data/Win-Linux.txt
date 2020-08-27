@@ -1,0 +1,2 @@
+lib/pkgconfig/Qt5WebKit.pc
+lib/pkgconfig/Qt5WebKitWidgets.pc

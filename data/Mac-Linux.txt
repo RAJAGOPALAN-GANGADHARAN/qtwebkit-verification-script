@@ -1,0 +1,5 @@
+libexec/QtWebNetworkProcess
+libexec/QtWebProcess
+libexec/QtWebStorageProcess
+qml/QtWebKit/experimental/libqmlwebkitexperimentalplugin.so
+qml/QtWebKit/experimental/qmldirqml/QtWebKit/libqmlwebkitplugin.so
