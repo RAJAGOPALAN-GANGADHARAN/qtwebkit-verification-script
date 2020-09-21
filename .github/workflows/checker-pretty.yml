@@ -38,9 +38,9 @@ jobs:
     - name: Verify (Mac)
       if: runner.os == 'macOS'
       shell: bash --noprofile --norc -eo pipefail -x {0}
-      run: pip3 install jinja2 && Tools/qt/installed-files-checker.py --version=5.212.0 --os=macos --install_prefix="${{ steps.qt_mac.outputs.qt_dir }}" --template=Tools/qt/QtBinaryChecklist.txt --release --verbose
+      run: pip3 install jinja2 && python3 installed-files-checker.py --version=5.212.0 --os=macos --install_prefix="/mnt/c" --template=Tools/qt/QtBinaryChecklist.txt --release --verbose
 
     - name: Verify (Windows)
       if: runner.os == 'Windows'
       shell: cmd
-      run: py -m pip install jinja2 && py Tools\qt\installed-files-checker.py --version=5.212.0 --os=windows --install_prefix="${{ steps.qt_win.outputs.qt_dir }}" --icu_version=65 --toolchain=msvc --template=Tools\qt\QtBinaryChecklist.txt --release --verbose
+      run: py -m pip install jinja2 && py installed-files-checker.py --version=5.212.0 --os=windows --install_prefix="/mnt/c" --icu_version=65 --toolchain=msvc --template=Tools\qt\QtBinaryChecklist.txt --release --verbose
