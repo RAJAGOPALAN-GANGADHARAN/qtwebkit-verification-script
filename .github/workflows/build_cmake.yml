@@ -34,11 +34,6 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu Release", artifact: "Linux",
-            os: ubuntu-latest,
-            build_type: Release,
-          }
-        - {
             name: "macOS Release", artifact: "macOS",
             os: macos-latest,
             build_type: Release,
@@ -50,7 +45,7 @@ jobs:
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
           }
 
-  steps:
+    steps:
     - name: Verify (Mac)
       if: runner.os == 'macOS'
       shell: bash --noprofile --norc -eo pipefail -x {0}
@@ -60,8 +55,3 @@ jobs:
       if: runner.os == 'Windows'
       shell: cmd
       run: py -m pip install jinja2 && py Tools\qt\installed-files-checker.py --version=5.212.0 --os=windows --install_prefix="${{ steps.qt_win.outputs.qt_dir }}" --icu_version=65 --toolchain=msvc --template=Tools\qt\QtBinaryChecklist.txt --release --verbose
-
-    - name: ccache stats
-      if: always()
-      shell: bash --noprofile --norc -eo pipefail -x {0}
-      run: ccache -s
