@@ -1,4 +1,4 @@
-name: CMake Build Matrix
+name: CMake Build Matrix - v2
 
 on:
   push:
