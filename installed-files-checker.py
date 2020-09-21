@@ -120,10 +120,10 @@ def default_verify(check_list):
             if not os.path.exists(chk_path):
                 error_list.append(chk_path)
                 if args.verbose:
-                    print(line,"\t","fail")
+                    print(Fore.RED+line, "\t", "fail")
             else:
                 if args.verbose:
-                    print(line, "\t", "ok")
+                    print(Fore.GREEN+line, "\t", "ok")
 
     return error_list
 
