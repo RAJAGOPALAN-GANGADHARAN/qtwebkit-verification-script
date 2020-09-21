@@ -74,7 +74,7 @@ check_list = template.render(os=args.os,
                              force_debug_info=args.force_debug_info, toolchain=args.toolchain).split('\n')
 
 def print_error(msg):
-    print(msg, file=sys.stderr)
+    print(Fore.RED+msg, file=sys.stderr)
 
 def custom_args_verify(check_list):
     error_list = []
@@ -82,9 +82,6 @@ def custom_args_verify(check_list):
     for line in check_list:
         if line.rstrip():
             line = line.lstrip()
-
-            if args.verbose:
-                print(line)
 
             if line.startswith('include/'):
                 chk_path = os.path.join(
@@ -101,10 +98,10 @@ def custom_args_verify(check_list):
             if not os.path.exists(chk_path):
                 error_list.append(chk_path)
                 if args.verbose:
-                    print(Fore.RED+line, "\t", "fail")
+                    print(line, "\t", Fore.RED+"fail")
             else:
                 if args.verbose:
-                    print(Fore.GREEN+line, "\t", "ok")
+                    print(line, "\t", Fore.GREEN+"ok")
 
     return error_list
 
@@ -117,13 +114,14 @@ def default_verify(check_list):
             line = line.lstrip()
 
             chk_path = os.path.join(args.install_prefix, line)
+
             if not os.path.exists(chk_path):
                 error_list.append(chk_path)
                 if args.verbose:
-                    print(Fore.RED+line, "\t", "fail")
+                    print(line, "\t", Fore.RED+"fail")
             else:
                 if args.verbose:
-                    print(Fore.GREEN+line, "\t", "ok")
+                    print(line, "\t", Fore.GREEN+"ok")
 
     return error_list
 
@@ -134,9 +132,10 @@ if not args.qt_install_headers and not args.install_prefix:
 res = custom_args_verify(check_list) if args.qt_install_headers else default_verify(check_list)
 
 if len(res) != 0:
-    print_error("Errors found files below are missing:")
-    for err in res:
-        print_error(err)
+    if not args.verbose:
+        print_error("Errors found files below are missing:")
+        for err in res:
+            print_error(err)
     exit(1)
 
 
