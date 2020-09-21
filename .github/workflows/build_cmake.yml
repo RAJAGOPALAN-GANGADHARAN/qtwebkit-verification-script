@@ -1,0 +1,66 @@
+name: CMake Build Matrix
+
+on:
+  push:
+    branches:
+      -master
+
+  pull_request:
+    branches:
+      - qtwebkit-dev-wip
+      - qtwebkit-5.212
+
+env:
+  QT_VERSION: 5.14.1
+  CMAKE_VERSION: 3.17.0-rc3
+  NINJA_VERSION: 1.10.0
+  CCACHE_VERSION: 3.7.7
+  CACHE_PARTITION: 5.212
+  HOST_N_CORES: 2
+  NINJA_STATUS: "[%f/%t %o/sec] "
+  CCACHE_COMPRESS: "true"
+  CCACHE_COMPRESSLEVEL: "6"
+  CCACHE_MAXSIZE: "250M"
+  CCACHE_SLOPPINESS: "pch_defines,time_macros"
+  CCACHE_HARDLINK: "true"
+  QT_MODULES: "qtbase qtdeclarative qtlocation qtmultimedia qtsensors qtwebchannel"
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            name: "Ubuntu Release", artifact: "Linux",
+            os: ubuntu-latest,
+            build_type: Release,
+          }
+        - {
+            name: "macOS Release", artifact: "macOS",
+            os: macos-latest,
+            build_type: Release,
+          }
+        - {
+            name: "Windows MSVC Conan Release", artifact: "Windows-MSVC",
+            os: windows-latest,
+            build_type: Release,
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+          }
+
+    - name: Verify (Mac)
+      if: runner.os == 'macOS'
+      shell: bash --noprofile --norc -eo pipefail -x {0}
+      run: pip3 install jinja2 && Tools/qt/installed-files-checker.py --version=5.212.0 --os=macos --install_prefix="${{ steps.qt_mac.outputs.qt_dir }}" --template=Tools/qt/QtBinaryChecklist.txt --release --verbose
+
+    - name: Verify (Windows)
+      if: runner.os == 'Windows'
+      shell: cmd
+      run: py -m pip install jinja2 && py Tools\qt\installed-files-checker.py --version=5.212.0 --os=windows --install_prefix="${{ steps.qt_win.outputs.qt_dir }}" --icu_version=65 --toolchain=msvc --template=Tools\qt\QtBinaryChecklist.txt --release --verbose
+
+    - name: ccache stats
+      if: always()
+      shell: bash --noprofile --norc -eo pipefail -x {0}
+      run: ccache -s
