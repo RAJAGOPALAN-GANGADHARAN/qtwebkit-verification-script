@@ -27,6 +27,7 @@ import sys
 from jinja2 import Environment, FileSystemLoader
 import argparse
 import os
+from colorama import Fore
 
 parser = argparse.ArgumentParser(description='Checker for Qtwebkit Binaries')
 parser.add_argument(
@@ -100,10 +101,10 @@ def custom_args_verify(check_list):
             if not os.path.exists(chk_path):
                 error_list.append(chk_path)
                 if args.verbose:
-                    print(line, "\t", "fail")
+                    print(Fore.RED+line, "\t", "fail")
             else:
                 if args.verbose:
-                    print(line, "\t", "ok")
+                    print(Fore.GREEN+line, "\t", "ok")
 
     return error_list
 
